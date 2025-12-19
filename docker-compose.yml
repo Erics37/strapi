@@ -1,28 +1,20 @@
-version: "3.8"
-
 services:
   strapi:
-    build: .
-    container_name: strapi-v5
-    restart: unless-stopped
-    env_file: .env
+    image: node:18
+    container_name: strapi-dev
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: npm run develop
+    environment:
+      NODE_ENV: development
     ports:
       - "1337:1337"
-    depends_on:
-      - postgres
-    volumes:
-      - ./public/uploads:/opt/app/public/uploads
 
   postgres:
     image: postgres:16
-    container_name: strapi-postgres
-    restart: unless-stopped
+    container_name: strapi-postgres-dev
     environment:
       POSTGRES_DB: strapi
       POSTGRES_USER: strapi
       POSTGRES_PASSWORD: strapipassword
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
